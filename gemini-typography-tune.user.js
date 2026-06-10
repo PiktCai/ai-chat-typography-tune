@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Gemini Typography Tune for Chinese
 // @namespace    https://github.com/PiktCai/ai-chat-typography-tune
-// @version      0.5.1
+// @version      0.5.2
 // @description  Refine Gemini typography for Chinese reading while preserving native code blocks, tables, formulas, and controls.
 // @author       local
 // @match        https://gemini.google.com/*
@@ -193,6 +193,27 @@
         overflow-wrap: anywhere;
       }
 
+      message-content :where(p, li, blockquote, h1, h2, h3, h4, h5, h6, strong, em),
+      model-response :where(p, li, blockquote, h1, h2, h3, h4, h5, h6, strong, em),
+      response-container :where(p, li, blockquote, h1, h2, h3, h4, h5, h6, strong, em),
+      .model-response-text :where(p, li, blockquote, h1, h2, h3, h4, h5, h6, strong, em),
+      .response-container-content :where(p, li, blockquote, h1, h2, h3, h4, h5, h6, strong, em),
+      .presented-response-container :where(p, li, blockquote, h1, h2, h3, h4, h5, h6, strong, em),
+      .markdown :where(p, li, blockquote, h1, h2, h3, h4, h5, h6, strong, em),
+      .markdown-main-panel :where(p, li, blockquote, h1, h2, h3, h4, h5, h6, strong, em),
+      .ms-cmark-node :where(p, li, blockquote, h1, h2, h3, h4, h5, h6, strong, em),
+      message-content span:not([class*="source"]):not([class*="citation"]):not([class*="file"]):not([class*="chip"]),
+      model-response span:not([class*="source"]):not([class*="citation"]):not([class*="file"]):not([class*="chip"]),
+      response-container span:not([class*="source"]):not([class*="citation"]):not([class*="file"]):not([class*="chip"]),
+      .model-response-text span:not([class*="source"]):not([class*="citation"]):not([class*="file"]):not([class*="chip"]),
+      .response-container-content span:not([class*="source"]):not([class*="citation"]):not([class*="file"]):not([class*="chip"]),
+      .presented-response-container span:not([class*="source"]):not([class*="citation"]):not([class*="file"]):not([class*="chip"]),
+      .markdown span:not([class*="source"]):not([class*="citation"]):not([class*="file"]):not([class*="chip"]),
+      .markdown-main-panel span:not([class*="source"]):not([class*="citation"]):not([class*="file"]):not([class*="chip"]),
+      .ms-cmark-node span:not([class*="source"]):not([class*="citation"]):not([class*="file"]):not([class*="chip"]) {
+        font-family: var(--gtt-content-font) !important;
+      }
+
       /* Rich Markdown widgets have their own scale. Keep them out of body-text tuning. */
       .math-inline,
       .math-inline *,
@@ -200,6 +221,7 @@
       .katex *,
       .katex-display,
       .katex-display * {
+        font-family: revert !important;
         letter-spacing: 0 !important;
         word-break: normal !important;
         overflow-wrap: normal !important;
@@ -209,6 +231,18 @@
       .katex,
       .katex-display {
         max-width: none !important;
+      }
+
+      message-content :where(pre, pre *, code, code *, kbd, samp),
+      model-response :where(pre, pre *, code, code *, kbd, samp),
+      response-container :where(pre, pre *, code, code *, kbd, samp),
+      .model-response-text :where(pre, pre *, code, code *, kbd, samp),
+      .response-container-content :where(pre, pre *, code, code *, kbd, samp),
+      .presented-response-container :where(pre, pre *, code, code *, kbd, samp),
+      .markdown :where(pre, pre *, code, code *, kbd, samp),
+      .markdown-main-panel :where(pre, pre *, code, code *, kbd, samp),
+      .ms-cmark-node :where(pre, pre *, code, code *, kbd, samp) {
+        font-family: var(--gtt-mono-font) !important;
       }
 
       message-content,
@@ -253,12 +287,18 @@
       .markdown-main-panel div[class*="citation"],
       .markdown-main-panel div[class*="file"],
       .markdown-main-panel div[class*="chip"] {
+        font-family: revert !important;
         font-size: 14px !important;
         line-height: 1.28 !important;
         letter-spacing: 0 !important;
         max-width: none !important;
         word-break: normal !important;
         overflow-wrap: normal !important;
+      }
+
+      message-content :where(a[class*="source"], a[class*="citation"], a[class*="file"], a[class*="chip"], span[class*="source"], span[class*="citation"], span[class*="file"], span[class*="chip"], div[class*="source"], div[class*="citation"], div[class*="file"], div[class*="chip"]) *,
+      .markdown-main-panel :where(a[class*="source"], a[class*="citation"], a[class*="file"], a[class*="chip"], span[class*="source"], span[class*="citation"], span[class*="file"], span[class*="chip"], div[class*="source"], div[class*="citation"], div[class*="file"], div[class*="chip"]) * {
+        font-family: revert !important;
       }
 
       message-content p,
