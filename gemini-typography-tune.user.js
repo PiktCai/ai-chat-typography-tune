@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Gemini Typography Tune for Chinese
-// @namespace    https://github.com/piktcai/gemini-typography-tune
+// @namespace    https://github.com/PiktCai/ai-chat-typography-tune
 // @version      0.4.6
 // @description  Refine Gemini typography for Chinese reading while preserving native code blocks, tables, formulas, and controls.
 // @author       local
