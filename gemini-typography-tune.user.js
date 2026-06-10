@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Gemini Typography Tune for Chinese
 // @namespace    https://github.com/PiktCai/ai-chat-typography-tune
-// @version      0.5.2
+// @version      0.4.6
 // @description  Refine Gemini typography for Chinese reading while preserving native code blocks, tables, formulas, and controls.
 // @author       local
 // @match        https://gemini.google.com/*
@@ -51,6 +51,17 @@
   };
 
   const fontStacks = {
+    ui: [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      "\"SF Pro Text\"",
+      "\"Segoe UI\"",
+      "\"Noto Sans SC\"",
+      "\"PingFang SC\"",
+      "\"Microsoft YaHei UI\"",
+      "\"Microsoft YaHei\"",
+      "sans-serif",
+    ].join(", "),
     content: [
       "-apple-system",
       "BlinkMacSystemFont",
@@ -105,6 +116,7 @@
 
     return `
       :root {
+        --gtt-ui-font: ${fontStacks.ui};
         --gtt-content-font: ${fontStacks.content};
         --gtt-mono-font: ${fontStacks.mono};
         --gtt-content-size: ${mode.contentSize};
@@ -121,11 +133,21 @@
       }
 
       html,
-      body {
+      body,
+      input,
+      textarea,
+      select {
+        font-family: var(--gtt-ui-font) !important;
         font-size: var(--gtt-ui-size);
         font-kerning: normal;
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
+      }
+
+      [lang="zh"],
+      [lang="zh-CN"],
+      [lang="zh-Hans"] {
+        font-family: var(--gtt-content-font) !important;
       }
 
       body {
@@ -136,7 +158,10 @@
       chat-app,
       chat-window,
       chat-window-content,
-      modular-zero-state {
+      modular-zero-state,
+      input-container,
+      input-area-v2 {
+        font-family: var(--gtt-ui-font) !important;
         letter-spacing: 0 !important;
       }
 
@@ -146,6 +171,7 @@
       .subtitle,
       .headline,
       .zero-state-title {
+        font-family: var(--gtt-content-font) !important;
         letter-spacing: 0 !important;
         font-weight: 560 !important;
       }
@@ -164,6 +190,7 @@
       mat-chip,
       intent-card,
       .card-zero-state {
+        font-family: var(--gtt-ui-font) !important;
         letter-spacing: 0 !important;
       }
 
@@ -193,27 +220,6 @@
         overflow-wrap: anywhere;
       }
 
-      message-content :where(p, li, blockquote, h1, h2, h3, h4, h5, h6, strong, em),
-      model-response :where(p, li, blockquote, h1, h2, h3, h4, h5, h6, strong, em),
-      response-container :where(p, li, blockquote, h1, h2, h3, h4, h5, h6, strong, em),
-      .model-response-text :where(p, li, blockquote, h1, h2, h3, h4, h5, h6, strong, em),
-      .response-container-content :where(p, li, blockquote, h1, h2, h3, h4, h5, h6, strong, em),
-      .presented-response-container :where(p, li, blockquote, h1, h2, h3, h4, h5, h6, strong, em),
-      .markdown :where(p, li, blockquote, h1, h2, h3, h4, h5, h6, strong, em),
-      .markdown-main-panel :where(p, li, blockquote, h1, h2, h3, h4, h5, h6, strong, em),
-      .ms-cmark-node :where(p, li, blockquote, h1, h2, h3, h4, h5, h6, strong, em),
-      message-content span:not([class*="source"]):not([class*="citation"]):not([class*="file"]):not([class*="chip"]),
-      model-response span:not([class*="source"]):not([class*="citation"]):not([class*="file"]):not([class*="chip"]),
-      response-container span:not([class*="source"]):not([class*="citation"]):not([class*="file"]):not([class*="chip"]),
-      .model-response-text span:not([class*="source"]):not([class*="citation"]):not([class*="file"]):not([class*="chip"]),
-      .response-container-content span:not([class*="source"]):not([class*="citation"]):not([class*="file"]):not([class*="chip"]),
-      .presented-response-container span:not([class*="source"]):not([class*="citation"]):not([class*="file"]):not([class*="chip"]),
-      .markdown span:not([class*="source"]):not([class*="citation"]):not([class*="file"]):not([class*="chip"]),
-      .markdown-main-panel span:not([class*="source"]):not([class*="citation"]):not([class*="file"]):not([class*="chip"]),
-      .ms-cmark-node span:not([class*="source"]):not([class*="citation"]):not([class*="file"]):not([class*="chip"]) {
-        font-family: var(--gtt-content-font) !important;
-      }
-
       /* Rich Markdown widgets have their own scale. Keep them out of body-text tuning. */
       .math-inline,
       .math-inline *,
@@ -221,7 +227,6 @@
       .katex *,
       .katex-display,
       .katex-display * {
-        font-family: revert !important;
         letter-spacing: 0 !important;
         word-break: normal !important;
         overflow-wrap: normal !important;
@@ -231,18 +236,6 @@
       .katex,
       .katex-display {
         max-width: none !important;
-      }
-
-      message-content :where(pre, pre *, code, code *, kbd, samp),
-      model-response :where(pre, pre *, code, code *, kbd, samp),
-      response-container :where(pre, pre *, code, code *, kbd, samp),
-      .model-response-text :where(pre, pre *, code, code *, kbd, samp),
-      .response-container-content :where(pre, pre *, code, code *, kbd, samp),
-      .presented-response-container :where(pre, pre *, code, code *, kbd, samp),
-      .markdown :where(pre, pre *, code, code *, kbd, samp),
-      .markdown-main-panel :where(pre, pre *, code, code *, kbd, samp),
-      .ms-cmark-node :where(pre, pre *, code, code *, kbd, samp) {
-        font-family: var(--gtt-mono-font) !important;
       }
 
       message-content,
@@ -260,6 +253,16 @@
       .ms-cmark-node {
         max-width: var(--gtt-max-measure);
         width: min(100%, var(--gtt-max-measure));
+      }
+
+      .markdown-main-panel,
+      .markdown-main-panel p,
+      .markdown-main-panel li,
+      .model-response-text,
+      .model-response-text p,
+      message-content,
+      message-content p {
+        font-family: var(--gtt-content-font) !important;
       }
 
       /* Keep Gemini's inline source/file chips as compact UI, not enlarged body text. */
@@ -287,18 +290,13 @@
       .markdown-main-panel div[class*="citation"],
       .markdown-main-panel div[class*="file"],
       .markdown-main-panel div[class*="chip"] {
-        font-family: revert !important;
+        font-family: var(--gtt-ui-font) !important;
         font-size: 14px !important;
         line-height: 1.28 !important;
         letter-spacing: 0 !important;
         max-width: none !important;
         word-break: normal !important;
         overflow-wrap: normal !important;
-      }
-
-      message-content :where(a[class*="source"], a[class*="citation"], a[class*="file"], a[class*="chip"], span[class*="source"], span[class*="citation"], span[class*="file"], span[class*="chip"], div[class*="source"], div[class*="citation"], div[class*="file"], div[class*="chip"]) *,
-      .markdown-main-panel :where(a[class*="source"], a[class*="citation"], a[class*="file"], a[class*="chip"], span[class*="source"], span[class*="citation"], span[class*="file"], span[class*="chip"], div[class*="source"], div[class*="citation"], div[class*="file"], div[class*="chip"]) * {
-        font-family: revert !important;
       }
 
       message-content p,
@@ -337,6 +335,7 @@
       .ms-cmark-node h1,
       .ms-cmark-node h2,
       .ms-cmark-node h3 {
+        font-family: var(--gtt-content-font) !important;
         font-weight: 680 !important;
         letter-spacing: 0 !important;
         line-height: 1.32 !important;
@@ -407,6 +406,19 @@
         font-size: 0.91em !important;
       }
 
+      /* Prompt/input area. */
+      rich-textarea,
+      .ql-editor,
+      [contenteditable="true"],
+      textarea,
+      [role="textbox"] {
+        font-family: var(--gtt-content-font) !important;
+        font-size: var(--gtt-content-size) !important;
+        line-height: 1.62 !important;
+        letter-spacing: 0 !important;
+        color: var(--gtt-soft-text) !important;
+      }
+
       /* User prompt chips/bubbles tend to look cramped in Chinese. */
       user-query,
       .user-query,
@@ -423,6 +435,14 @@
       .query-text,
       .query-text-line {
         text-wrap: pretty;
+      }
+
+      .ql-editor.ql-blank::before,
+      rich-textarea .ql-editor.ql-blank::before,
+      [contenteditable="true"][aria-label]::before {
+        font-family: var(--gtt-content-font) !important;
+        letter-spacing: 0 !important;
+        color: var(--gtt-muted) !important;
       }
 
       @supports not (word-break: auto-phrase) {
