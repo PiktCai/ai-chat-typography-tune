@@ -190,7 +190,7 @@
       .markdown strong,
       .markdown-main-panel strong,
       .ms-cmark-node strong {
-        font-weight: 680 !important;
+        font-weight: 600 !important;
       }
 
       .mat-mdc-button,
