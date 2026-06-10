@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Gemini Typography Tune for Chinese
 // @namespace    https://github.com/PiktCai/ai-chat-typography-tune
-// @version      0.4.9
+// @version      0.5.0
 // @description  Refine Gemini typography for Chinese reading while preserving native code blocks, tables, formulas, and controls.
 // @author       local
 // @match        https://gemini.google.com/*
@@ -51,31 +51,6 @@
   };
 
   const fontStacks = {
-    ui: [
-      "-apple-system",
-      "BlinkMacSystemFont",
-      "\"SF Pro Text\"",
-      "\"Segoe UI\"",
-      "\"Noto Sans SC\"",
-      "\"PingFang SC\"",
-      "\"Microsoft YaHei UI\"",
-      "\"Microsoft YaHei\"",
-      "sans-serif",
-    ].join(", "),
-    content: [
-      "\"Google Sans Flex\"",
-      "-apple-system",
-      "BlinkMacSystemFont",
-      "\"SF Pro Text\"",
-      "\"Segoe UI\"",
-      "\"PingFang SC\"",
-      "\"Hiragino Sans GB\"",
-      "\"Noto Sans SC\"",
-      "\"Source Han Sans SC\"",
-      "\"Microsoft YaHei UI\"",
-      "\"Microsoft YaHei\"",
-      "sans-serif",
-    ].join(", "),
     mono: [
       "\"SFMono-Regular\"",
       "\"Cascadia Code\"",
@@ -117,8 +92,6 @@
 
     return `
       :root {
-        --gtt-ui-font: ${fontStacks.ui};
-        --gtt-content-font: ${fontStacks.content};
         --gtt-mono-font: ${fontStacks.mono};
         --gtt-content-size: ${mode.contentSize};
         --gtt-ui-size: ${mode.uiSize};
@@ -133,19 +106,30 @@
         --gtt-code-border: light-dark(#dfe3e8, #303640);
       }
 
+      @font-face {
+        font-family: "Google Sans Flex";
+        src: local("PingFang SC"), local("Noto Sans SC"), local("Source Han Sans SC"), local("Microsoft YaHei UI"), local("Microsoft YaHei");
+        unicode-range: U+2E80-2EFF, U+3000-303F, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
+      }
+
+      @font-face {
+        font-family: "Google Sans Text";
+        src: local("PingFang SC"), local("Noto Sans SC"), local("Source Han Sans SC"), local("Microsoft YaHei UI"), local("Microsoft YaHei");
+        unicode-range: U+2E80-2EFF, U+3000-303F, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
+      }
+
+      @font-face {
+        font-family: "Google Sans";
+        src: local("PingFang SC"), local("Noto Sans SC"), local("Source Han Sans SC"), local("Microsoft YaHei UI"), local("Microsoft YaHei");
+        unicode-range: U+2E80-2EFF, U+3000-303F, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
+      }
+
       html,
       body {
-        font-family: var(--gtt-ui-font) !important;
         font-size: var(--gtt-ui-size);
         font-kerning: normal;
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
-      }
-
-      [lang="zh"],
-      [lang="zh-CN"],
-      [lang="zh-Hans"] {
-        font-family: var(--gtt-content-font) !important;
       }
 
       body {
@@ -157,7 +141,6 @@
       chat-window,
       chat-window-content,
       modular-zero-state {
-        font-family: var(--gtt-ui-font) !important;
         letter-spacing: 0 !important;
       }
 
@@ -167,7 +150,6 @@
       .subtitle,
       .headline,
       .zero-state-title {
-        font-family: var(--gtt-content-font) !important;
         letter-spacing: 0 !important;
         font-weight: 560 !important;
       }
@@ -186,7 +168,6 @@
       mat-chip,
       intent-card,
       .card-zero-state {
-        font-family: var(--gtt-ui-font) !important;
         letter-spacing: 0 !important;
       }
 
@@ -208,11 +189,8 @@
       [data-response-index],
       [data-test-id*="response"],
       [data-test-id*="conversation-turn"] {
-        font-family: var(--gtt-content-font) !important;
         font-size: var(--gtt-content-size) !important;
         line-height: var(--gtt-line-height) !important;
-        font-stretch: 100% !important;
-        font-variation-settings: "wdth" 100, "slnt" 0, "ROND" 0;
         letter-spacing: 0 !important;
         word-break: auto-phrase;
         overflow-wrap: anywhere;
@@ -253,16 +231,6 @@
         width: min(100%, var(--gtt-max-measure));
       }
 
-      .markdown-main-panel,
-      .markdown-main-panel p,
-      .markdown-main-panel li,
-      .model-response-text,
-      .model-response-text p,
-      message-content,
-      message-content p {
-        font-family: var(--gtt-content-font) !important;
-      }
-
       /* Keep Gemini's inline source/file chips as compact UI, not enlarged body text. */
       message-content a[class*="source"],
       message-content a[class*="citation"],
@@ -288,7 +256,6 @@
       .markdown-main-panel div[class*="citation"],
       .markdown-main-panel div[class*="file"],
       .markdown-main-panel div[class*="chip"] {
-        font-family: var(--gtt-ui-font) !important;
         font-size: 14px !important;
         line-height: 1.28 !important;
         letter-spacing: 0 !important;
@@ -333,7 +300,6 @@
       .ms-cmark-node h1,
       .ms-cmark-node h2,
       .ms-cmark-node h3 {
-        font-family: var(--gtt-content-font) !important;
         font-weight: 680 !important;
         letter-spacing: 0 !important;
         line-height: 1.32 !important;
@@ -411,11 +377,8 @@
       .query-text-line,
       [data-test-id*="user-query"],
       [data-test-id*="prompt-text"] {
-        font-family: var(--gtt-content-font) !important;
         font-size: var(--gtt-content-size) !important;
         line-height: 1.64 !important;
-        font-stretch: 100% !important;
-        font-variation-settings: "wdth" 100, "slnt" 0, "ROND" 0;
         letter-spacing: 0 !important;
       }
 

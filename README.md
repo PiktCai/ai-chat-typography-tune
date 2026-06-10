@@ -20,14 +20,14 @@ Target: [Gemini](https://gemini.google.com/)
 
 What it changes:
 
-- Uses a Chinese-aware readability font stack for Gemini responses and prompt bubbles.
+- Uses CJK-only font fallback aliases for Gemini responses and prompt bubbles, while leaving Latin font matching to Gemini.
 - Narrows the response measure for more natural Chinese line length.
 - Tightens paragraph rhythm for continuous long-form reading.
 - Keeps Gemini's input box, code blocks, tables, formulas, chips, buttons, and sidebar close to their native rendering.
 
 Gemini's code blocks may be wider than the prose column. This script preserves that native behavior because code needs more horizontal space and Gemini's code block header/actions are interactive controls.
 
-Gemini may render small Latin fragments with narrow Google web font instances such as `Google Sans Flex SuperCondensed`. This script does not try to exactly restore those fallbacks. It prefers `Google Sans Flex` at normal width for Latin text, then falls back to system and Chinese fonts so mixed Chinese and English prose stays comfortable.
+Gemini may render small Latin fragments with narrow Google web font instances such as `Google Sans Flex SuperCondensed`. This script deliberately avoids overriding Latin fonts. It only maps common Google Sans family names to local Simplified Chinese fonts for CJK unicode ranges, so English stays native while Chinese glyphs avoid awkward fallback shapes.
 
 Reading modes are available from the userscript manager menu:
 
