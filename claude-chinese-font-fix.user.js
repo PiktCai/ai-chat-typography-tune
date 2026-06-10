@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Claude Chinese Font Fix
 // @namespace    https://github.com/PiktCai/ai-chat-typography-tune
-// @version      0.5.1
+// @version      0.5.2
 // @description  Match Claude.ai assistant reply Chinese glyphs to the native user-message Chinese font while preserving Claude's Latin message font.
 // @author       local
 // @match        https://claude.ai/*
@@ -15,6 +15,8 @@
 
   const STYLE_ID = "claude-chinese-font-fix-style";
   const claudeMessageFont = [
+    "\"Anthropic Serif Web Text\"",
+    "\"Anthropic Serif\"",
     "\"Tiempos Text\"",
     "\"Tiempos\"",
     "ui-serif",
