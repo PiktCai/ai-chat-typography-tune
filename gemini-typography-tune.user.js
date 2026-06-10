@@ -1,16 +1,14 @@
 // ==UserScript==
 // @name         Gemini Typography Tune for Chinese
 // @namespace    https://github.com/PiktCai/ai-chat-typography-tune
-// @version      0.6.0
-// @description  Refine Gemini spacing for Chinese reading, with optional font tuning, while preserving native code blocks, tables, formulas, and controls.
+// @version      0.7.0
+// @description  Refine Gemini spacing and heading weight for Chinese reading while preserving native fonts, code blocks, tables, formulas, and controls.
 // @author       local
 // @match        https://gemini.google.com/*
 // @match        https://bard.google.com/*
 // @run-at       document-start
 // @noframes
-// @grant        GM_registerMenuCommand
-// @grant        GM_getValue
-// @grant        GM_setValue
+// @grant        none
 // ==/UserScript==
 
 (function () {
@@ -18,7 +16,6 @@
 
   const STYLE_ID = "gemini-typography-tune-style";
   const DATA_ATTR = "data-gemini-typography-tune";
-  const FONT_TUNING_KEY = "geminiTypographyTuneFontEnabled";
 
   const SETTINGS = {
     contentSize: "16.75px",
@@ -27,190 +24,9 @@
     maxMeasure: "42em",
   };
 
-  const fontStacks = {
-    ui: [
-      "-apple-system",
-      "BlinkMacSystemFont",
-      "\"SF Pro Text\"",
-      "\"Segoe UI\"",
-      "\"Noto Sans SC\"",
-      "\"PingFang SC\"",
-      "\"Microsoft YaHei UI\"",
-      "\"Microsoft YaHei\"",
-      "sans-serif",
-    ].join(", "),
-    content: [
-      "-apple-system",
-      "BlinkMacSystemFont",
-      "\"SF Pro Text\"",
-      "\"Segoe UI\"",
-      "\"PingFang SC\"",
-      "\"Hiragino Sans GB\"",
-      "\"Noto Sans SC\"",
-      "\"Source Han Sans SC\"",
-      "\"Microsoft YaHei UI\"",
-      "\"Microsoft YaHei\"",
-      "sans-serif",
-    ].join(", "),
-    mono: [
-      "\"SFMono-Regular\"",
-      "\"Cascadia Code\"",
-      "\"JetBrains Mono\"",
-      "\"Fira Code\"",
-      "Consolas",
-      "\"Liberation Mono\"",
-      "monospace",
-    ].join(", "),
-  };
-
-  function safeGet(key, fallback) {
-    try {
-      return typeof GM_getValue === "function" ? GM_getValue(key, fallback) : localStorage.getItem(key) || fallback;
-    } catch (_) {
-      return fallback;
-    }
-  }
-
-  function safeSet(key, value) {
-    try {
-      if (typeof GM_setValue === "function") {
-        GM_setValue(key, value);
-      } else {
-        localStorage.setItem(key, value);
-      }
-    } catch (_) {
-      // Visual enhancement only. If storage is unavailable, keep the current page mode.
-    }
-  }
-
-  function isFontTuningEnabled() {
-    return safeGet(FONT_TUNING_KEY, "false") === "true";
-  }
-
-  function css(fontTuningEnabled) {
-    const fontTuningCss = fontTuningEnabled ? `
-      html,
-      body {
-        font-family: var(--gtt-ui-font) !important;
-        font-kerning: normal;
-        text-rendering: optimizeLegibility;
-        -webkit-font-smoothing: antialiased;
-      }
-
-      [lang="zh"],
-      [lang="zh-CN"],
-      [lang="zh-Hans"] {
-        font-family: var(--gtt-content-font) !important;
-      }
-
-      chat-app,
-      chat-window,
-      chat-window-content,
-      modular-zero-state {
-        font-family: var(--gtt-ui-font) !important;
-      }
-
-      .logo,
-      .bard-text,
-      .title,
-      .subtitle,
-      .headline,
-      .zero-state-title,
-      message-content,
-      model-response,
-      response-container,
-      user-query,
-      .user-query,
-      .query-text,
-      .query-text-line,
-      .model-response-text,
-      .response-container-content,
-      .presented-response-container,
-      .markdown,
-      .markdown-main-panel,
-      .ms-cmark-node,
-      [data-response-index],
-      [data-test-id*="response"],
-      [data-test-id*="conversation-turn"],
-      .markdown-main-panel,
-      .markdown-main-panel p,
-      .markdown-main-panel li,
-      .model-response-text,
-      .model-response-text p,
-      message-content,
-      message-content p,
-      message-content h1,
-      message-content h2,
-      message-content h3,
-      model-response h1,
-      model-response h2,
-      model-response h3,
-      .presented-response-container h1,
-      .presented-response-container h2,
-      .presented-response-container h3,
-      .markdown h1,
-      .markdown h2,
-      .markdown h3,
-      .markdown-main-panel h1,
-      .markdown-main-panel h2,
-      .markdown-main-panel h3,
-      .ms-cmark-node h1,
-      .ms-cmark-node h2,
-      .ms-cmark-node h3,
-      user-query,
-      .user-query,
-      .query-text,
-      .query-text-line,
-      [data-test-id*="user-query"],
-      [data-test-id*="prompt-text"] {
-        font-family: var(--gtt-content-font) !important;
-      }
-
-      .mat-mdc-button,
-      .mdc-button,
-      .mat-mdc-menu-item,
-      mat-option,
-      mat-chip,
-      intent-card,
-      .card-zero-state,
-      message-content a[class*="source"],
-      message-content a[class*="citation"],
-      message-content a[class*="file"],
-      message-content a[class*="chip"],
-      message-content span[class*="source"],
-      message-content span[class*="citation"],
-      message-content span[class*="file"],
-      message-content span[class*="chip"],
-      message-content div[class*="source"],
-      message-content div[class*="citation"],
-      message-content div[class*="file"],
-      message-content div[class*="chip"],
-      .markdown-main-panel a[class*="source"],
-      .markdown-main-panel a[class*="citation"],
-      .markdown-main-panel a[class*="file"],
-      .markdown-main-panel a[class*="chip"],
-      .markdown-main-panel span[class*="source"],
-      .markdown-main-panel span[class*="citation"],
-      .markdown-main-panel span[class*="file"],
-      .markdown-main-panel span[class*="chip"],
-      .markdown-main-panel div[class*="source"],
-      .markdown-main-panel div[class*="citation"],
-      .markdown-main-panel div[class*="file"],
-      .markdown-main-panel div[class*="chip"] {
-        font-family: var(--gtt-ui-font) !important;
-      }
-
-      .markdown-main-panel :not(pre) > code,
-      message-content :not(pre) > code {
-        font-family: var(--gtt-mono-font) !important;
-      }
-    ` : "";
-
+  function css() {
     return `
       :root {
-        --gtt-ui-font: ${fontStacks.ui};
-        --gtt-content-font: ${fontStacks.content};
-        --gtt-mono-font: ${fontStacks.mono};
         --gtt-content-size: ${SETTINGS.contentSize};
         --gtt-line-height: ${SETTINGS.lineHeight};
         --gtt-paragraph-gap: ${SETTINGS.paragraphGap};
@@ -259,7 +75,7 @@
         overflow-wrap: anywhere;
       }
 
-      /* Rich Markdown widgets have their own scale. Keep them out of body-text tuning. */
+      /* Rich Markdown widgets have their own scale. Keep them out of body text rules. */
       .math-inline,
       .math-inline *,
       .katex,
@@ -481,13 +297,11 @@
         }
       }
 
-      ${fontTuningCss}
     `;
   }
 
   function applyStyle() {
-    const fontTuningEnabled = isFontTuningEnabled();
-    document.documentElement.setAttribute(DATA_ATTR, fontTuningEnabled ? "font-on" : "font-off");
+    document.documentElement.setAttribute(DATA_ATTR, "layout");
 
     let style = document.getElementById(STYLE_ID);
     if (!style) {
@@ -498,20 +312,10 @@
       target.appendChild(style);
     }
 
-    style.textContent = css(fontTuningEnabled);
-  }
-
-  function installMenu() {
-    if (typeof GM_registerMenuCommand !== "function") return;
-
-    GM_registerMenuCommand("Gemini Typography: toggle font tuning", () => {
-      safeSet(FONT_TUNING_KEY, isFontTuningEnabled() ? "false" : "true");
-      applyStyle();
-    });
+    style.textContent = css();
   }
 
   applyStyle();
-  installMenu();
 
   const observer = new MutationObserver(() => {
     if (!document.getElementById(STYLE_ID)) applyStyle();

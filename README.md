@@ -4,7 +4,7 @@ Tampermonkey userscripts for improving Chinese typography in AI chat web apps.
 
 The project currently includes:
 
-- `gemini-typography-tune.user.js`: Chinese reading improvements for the new Gemini web UI, with optional Chinese-aware font tuning.
+- `gemini-typography-tune.user.js`: Chinese reading improvements for the new Gemini web UI without changing Gemini's native fonts.
 - `claude-chinese-font-fix.user.js`: fixes Claude.ai assistant replies that fall back to the wrong CJK glyphs, while preserving Claude's Latin message font.
 
 ## Install
@@ -22,12 +22,12 @@ What it changes:
 
 - Narrows the response measure for more natural Chinese line length.
 - Tightens paragraph rhythm for continuous long-form reading.
+- Adjusts heading and bold-text weight for clearer hierarchy.
 - Keeps Gemini's input box, code blocks, tables, formulas, chips, buttons, and sidebar close to their native rendering.
-- Optionally applies a Chinese-aware font stack for Gemini responses and prompt bubbles.
 
 Gemini's code blocks may be wider than the prose column. This script preserves that native behavior because code needs more horizontal space and Gemini's code block header/actions are interactive controls.
 
-Font tuning is off by default. Use the userscript manager menu command `Gemini Typography: toggle font tuning` to toggle it when Gemini's native CJK fallback looks wrong. The spacing and reading-rhythm tuning always stays on.
+This script deliberately does not set `font-family`, `@font-face`, or CJK fallback rules. It keeps Gemini's native font selection and only adjusts reading rhythm, measure, heading scale, and weight.
 
 ## Claude Chinese Font Fix
 
