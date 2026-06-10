@@ -4,8 +4,7 @@ Tampermonkey userscripts for improving Chinese typography in AI chat web apps.
 
 The project currently includes:
 
-- `gemini-typography-tune.user.js`: Chinese reading improvements for the new Gemini web UI, including a Chinese-aware font stack.
-- `gemini-layout-tune.user.js`: Gemini reading rhythm improvements without changing any font family.
+- `gemini-typography-tune.user.js`: Chinese reading improvements for the new Gemini web UI, with optional Chinese-aware font tuning.
 - `claude-chinese-font-fix.user.js`: fixes Claude.ai assistant replies that fall back to the wrong CJK glyphs, while preserving Claude's Latin message font.
 
 ## Install
@@ -21,32 +20,14 @@ Target: [Gemini](https://gemini.google.com/)
 
 What it changes:
 
-- Uses a Chinese-aware font stack for Gemini responses and prompt bubbles.
 - Narrows the response measure for more natural Chinese line length.
 - Tightens paragraph rhythm for continuous long-form reading.
 - Keeps Gemini's input box, code blocks, tables, formulas, chips, buttons, and sidebar close to their native rendering.
+- Optionally applies a Chinese-aware font stack for Gemini responses and prompt bubbles.
 
 Gemini's code blocks may be wider than the prose column. This script preserves that native behavior because code needs more horizontal space and Gemini's code block header/actions are interactive controls.
 
-Reading modes are available from the userscript manager menu:
-
-- `Balanced Chinese`: default, compact Chinese long-form reading.
-- `Roomier Reading`: larger text with a little more air.
-- `Compact Chinese`: denser reading for small screens or long sessions.
-
-## Gemini Layout Tune
-
-Target: [Gemini](https://gemini.google.com/)
-
-This is a layout-only variant for users who prefer Gemini's native font rendering.
-
-What it changes:
-
-- Adjusts response and prompt-bubble size, line height, measure, paragraph rhythm, and heading scale.
-- Does not set `font-family`, `@font-face`, or CJK font fallback rules.
-- Keeps the input box, code blocks, tables, formulas, chips, buttons, and sidebar close to Gemini's native rendering.
-
-Use this instead of `gemini-typography-tune.user.js` when you want spacing improvements without font changes.
+Font tuning is off by default. Use the userscript manager menu command `Gemini Typography: toggle font tuning` to toggle it when Gemini's native CJK fallback looks wrong. The spacing and reading-rhythm tuning always stays on.
 
 ## Claude Chinese Font Fix
 
