@@ -166,33 +166,6 @@
         font-family: var(--gtt-content-font) !important;
       }
 
-      message-content h1,
-      message-content h2,
-      message-content h3,
-      model-response h1,
-      model-response h2,
-      model-response h3,
-      .presented-response-container h1,
-      .presented-response-container h2,
-      .presented-response-container h3,
-      .markdown h1,
-      .markdown h2,
-      .markdown h3,
-      .markdown-main-panel h1,
-      .markdown-main-panel h2,
-      .markdown-main-panel h3,
-      .ms-cmark-node h1,
-      .ms-cmark-node h2,
-      .ms-cmark-node h3,
-      message-content strong,
-      model-response strong,
-      .presented-response-container strong,
-      .markdown strong,
-      .markdown-main-panel strong,
-      .ms-cmark-node strong {
-        font-weight: 600 !important;
-      }
-
       .mat-mdc-button,
       .mdc-button,
       .mat-mdc-menu-item,
@@ -390,10 +363,20 @@
       .ms-cmark-node h1,
       .ms-cmark-node h2,
       .ms-cmark-node h3 {
+        font-weight: 600 !important;
         letter-spacing: 0 !important;
         line-height: 1.32 !important;
         margin-block: 0.78em 0.24em !important;
         color: var(--gtt-ink) !important;
+      }
+
+      message-content strong,
+      model-response strong,
+      .presented-response-container strong,
+      .markdown strong,
+      .markdown-main-panel strong,
+      .ms-cmark-node strong {
+        font-weight: 600 !important;
       }
 
       message-content h1,
