@@ -22,7 +22,6 @@
 
   const SETTINGS = {
     contentSize: "16.75px",
-    uiSize: "14.5px",
     lineHeight: "1.56",
     paragraphGap: "0",
     maxMeasure: "42em",
@@ -93,6 +92,9 @@
       html,
       body {
         font-family: var(--gtt-ui-font) !important;
+        font-kerning: normal;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
       }
 
       [lang="zh"],
@@ -210,7 +212,6 @@
         --gtt-content-font: ${fontStacks.content};
         --gtt-mono-font: ${fontStacks.mono};
         --gtt-content-size: ${SETTINGS.contentSize};
-        --gtt-ui-size: ${SETTINGS.uiSize};
         --gtt-line-height: ${SETTINGS.lineHeight};
         --gtt-paragraph-gap: ${SETTINGS.paragraphGap};
         --gtt-max-measure: ${SETTINGS.maxMeasure};
@@ -221,34 +222,9 @@
         --gtt-code-border: light-dark(#dfe3e8, #303640);
       }
 
-      html,
-      body {
-        font-size: var(--gtt-ui-size);
-        font-kerning: normal;
-        text-rendering: optimizeLegibility;
-        -webkit-font-smoothing: antialiased;
-      }
-
       body {
         letter-spacing: 0 !important;
         color: var(--gtt-ink);
-      }
-
-      chat-app,
-      chat-window,
-      chat-window-content,
-      modular-zero-state {
-        letter-spacing: 0 !important;
-      }
-
-      .logo,
-      .bard-text,
-      .title,
-      .subtitle,
-      .headline,
-      .zero-state-title {
-        letter-spacing: 0 !important;
-        font-weight: 560 !important;
       }
 
       .zero-state-title,
@@ -256,16 +232,6 @@
       modular-zero-state h2 {
         line-height: 1.34 !important;
         text-wrap: balance;
-      }
-
-      .mat-mdc-button,
-      .mdc-button,
-      .mat-mdc-menu-item,
-      mat-option,
-      mat-chip,
-      intent-card,
-      .card-zero-state {
-        letter-spacing: 0 !important;
       }
 
       /* Gemini response text. Use custom elements first because generated classes churn. */
@@ -397,7 +363,6 @@
       .ms-cmark-node h1,
       .ms-cmark-node h2,
       .ms-cmark-node h3 {
-        font-weight: 680 !important;
         letter-spacing: 0 !important;
         line-height: 1.32 !important;
         margin-block: 0.78em 0.24em !important;
@@ -429,15 +394,6 @@
       .markdown-main-panel h3,
       .ms-cmark-node h3 {
         font-size: calc(var(--gtt-content-size) * 1.13) !important;
-      }
-
-      message-content strong,
-      model-response strong,
-      .presented-response-container strong,
-      .markdown strong,
-      .markdown-main-panel strong,
-      .ms-cmark-node strong {
-        font-weight: 680 !important;
       }
 
       message-content blockquote,
@@ -499,7 +455,6 @@
       @media (max-width: 720px) {
         :root {
           --gtt-content-size: clamp(15.5px, 4.15vw, ${SETTINGS.contentSize});
-          --gtt-ui-size: 14px;
           --gtt-max-measure: 100%;
         }
 
