@@ -23,6 +23,7 @@ What it changes:
 - Narrows the response measure for more natural Chinese line length.
 - Tightens paragraph rhythm for continuous long-form reading.
 - Adjusts heading and bold-text weight for clearer hierarchy.
+- Preserves Gemini's native body-text size to avoid jumps during streaming updates.
 - Keeps Gemini's input box, code blocks, tables, formulas, chips, buttons, and sidebar close to their native rendering.
 
 Gemini's code blocks may be wider than the prose column. This script preserves that native behavior because code needs more horizontal space and Gemini's code block header/actions are interactive controls.

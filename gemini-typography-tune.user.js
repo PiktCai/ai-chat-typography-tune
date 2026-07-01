@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Gemini Typography Tune for Chinese
 // @namespace    https://github.com/PiktCai/ai-chat-typography-tune
-// @version      0.7.0
+// @version      0.7.1
 // @description  Refine Gemini spacing and heading weight for Chinese reading while preserving native fonts, code blocks, tables, formulas, and controls.
 // @author       local
 // @match        https://gemini.google.com/*
@@ -18,7 +18,6 @@
   const DATA_ATTR = "data-gemini-typography-tune";
 
   const SETTINGS = {
-    contentSize: "16.75px",
     lineHeight: "1.56",
     paragraphGap: "0",
     maxMeasure: "42em",
@@ -27,7 +26,6 @@
   function css() {
     return `
       :root {
-        --gtt-content-size: ${SETTINGS.contentSize};
         --gtt-line-height: ${SETTINGS.lineHeight};
         --gtt-paragraph-gap: ${SETTINGS.paragraphGap};
         --gtt-max-measure: ${SETTINGS.maxMeasure};
@@ -68,7 +66,6 @@
       [data-response-index],
       [data-test-id*="response"],
       [data-test-id*="conversation-turn"] {
-        font-size: var(--gtt-content-size) !important;
         line-height: var(--gtt-line-height) !important;
         letter-spacing: 0 !important;
         word-break: auto-phrase;
@@ -135,7 +132,6 @@
       .markdown-main-panel div[class*="citation"],
       .markdown-main-panel div[class*="file"],
       .markdown-main-panel div[class*="chip"] {
-        font-size: 14px !important;
         line-height: 1.28 !important;
         letter-spacing: 0 !important;
         max-width: none !important;
@@ -201,7 +197,7 @@
       .markdown h1,
       .markdown-main-panel h1,
       .ms-cmark-node h1 {
-        font-size: calc(var(--gtt-content-size) * 1.44) !important;
+        font-size: 1.44em !important;
       }
 
       message-content h2,
@@ -210,7 +206,7 @@
       .markdown h2,
       .markdown-main-panel h2,
       .ms-cmark-node h2 {
-        font-size: calc(var(--gtt-content-size) * 1.28) !important;
+        font-size: 1.28em !important;
       }
 
       message-content h3,
@@ -219,7 +215,7 @@
       .markdown h3,
       .markdown-main-panel h3,
       .ms-cmark-node h3 {
-        font-size: calc(var(--gtt-content-size) * 1.13) !important;
+        font-size: 1.13em !important;
       }
 
       message-content blockquote,
@@ -255,7 +251,6 @@
       .query-text-line,
       [data-test-id*="user-query"],
       [data-test-id*="prompt-text"] {
-        font-size: var(--gtt-content-size) !important;
         line-height: 1.64 !important;
         letter-spacing: 0 !important;
       }
@@ -280,7 +275,6 @@
 
       @media (max-width: 720px) {
         :root {
-          --gtt-content-size: clamp(15.5px, 4.15vw, ${SETTINGS.contentSize});
           --gtt-max-measure: 100%;
         }
 
